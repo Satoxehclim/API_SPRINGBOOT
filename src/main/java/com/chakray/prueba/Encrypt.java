@@ -1,9 +1,17 @@
 package com.chakray.prueba;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
@@ -14,8 +22,8 @@ import javax.crypto.spec.SecretKeySpec;
 public class Encrypt {
 
     // Nota para los desarrolladores: Estas claves fueron generadas aleatoriamente en https://us.norton.com/feature/password-generator
-    private static final String key = "sta1$o0HlTi_huwez#p_d!ditrepr+to";
-    private static final String salt = "phAg4S-xIb3b*OtIrucREjOVlQ6R18Ir";
+    private static final String KEY = "sta1$o0HlTi_huwez#p_d!ditrepr+to";
+    private static final String SALT = "phAg4S-xIb3b*OtIrucREjOVlQ6R18Ir";
 
     private SecretKey secretKeyTemp;
 
@@ -24,10 +32,9 @@ public class Encrypt {
         KeySpec spec;
         try {
             factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-            spec = new PBEKeySpec(key.toCharArray(), salt.getBytes(), 65536, 256);
+            spec = new PBEKeySpec(KEY.toCharArray(), SALT.getBytes(), 65536, 256);
             secretKeyTemp = factory.generateSecret(spec);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
         }
     }
 
@@ -39,8 +46,7 @@ public class Encrypt {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
             return Base64.getEncoder().encodeToString(cipher.doFinal(password.getBytes("UTF-8")));
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (UnsupportedEncodingException | InvalidAlgorithmParameterException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
         }
         return null;
     }
@@ -53,8 +59,7 @@ public class Encrypt {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
             return new String(cipher.doFinal(Base64.getDecoder().decode(password)), "UTF-8");
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (UnsupportedEncodingException | InvalidAlgorithmParameterException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
         }
         return null;
     }

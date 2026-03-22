@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -159,6 +160,36 @@ public class UsersController {
         }
     }
 
-    //TODO: Implementar endpoint para actualizar usuario
+    @PatchMapping( path = "/{id}")
+    public Object updateUser(@PathVariable("id") Long id, @RequestBody UsersModel user){
+        UsersModel userToUpdate = usersService.getUserById(id);
+        if (userToUpdate == null) {
+            return "{\"message\": \"user not found\"}";
+        }
+        if (user.getEmail() != null) {
+            userToUpdate.setEmail(user.getEmail());
+        }
+        if (user.getName() != null) {
+            userToUpdate.setName(user.getName());
+        }
+        if (user.getPhone() != null) {
+            userToUpdate.setPhone(user.getPhone());
+        }
+        if (user.getPassword() != null) {
+            userToUpdate.setPassword(encrypt.encryptAES256(user.getPassword()));
+        }
+        if (user.getTax_id() != null) {
+            userToUpdate.setTax_id(user.getTax_id());
+        }
+        if (user.getAddresses() != null) {
+            userToUpdate.setAddresses(user.getAddresses());
+        }
+        try {
+            return usersService.saveUser(userToUpdate);
+        } catch (Exception e) {
+            return "{\"message\": \"error updating user, review the data\"}";
+        }
+    }
 
+    //TODO: Implementar endpoint para login de usuario
 }

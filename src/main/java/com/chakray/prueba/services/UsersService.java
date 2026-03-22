@@ -30,6 +30,10 @@ public class UsersService {
         }
     }
 
+    public UsersModel getUserById(Long id){
+        return usersRepository.findById(id).orElse(null);
+    }
+
     // Contains
     public ArrayList<UsersModel> findUserContainsEmail(String email) {
         return usersRepository.findByEmailContains(email);
