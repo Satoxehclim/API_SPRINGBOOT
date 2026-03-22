@@ -5,6 +5,9 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.chakray.prueba.Encrypt;
 import com.chakray.prueba.models.UsersModel;
 import com.chakray.prueba.services.UsersService;
@@ -191,5 +196,30 @@ public class UsersController {
         }
     }
 
-    //TODO: Implementar endpoint para login de usuario
+    @PostMapping("/login")
+    public Object loginUser(@RequestBody UsersModel user){
+        if (user.getTax_id() == null || user.getPassword() == null) {
+            return "{\"message\": \"missing required fields, the following fields are required: tax_id and password\"}";
+        }
+        ArrayList<UsersModel> users = usersService.findUserEqualsTaxId(user.getTax_id());
+        if (users.isEmpty()) {
+            return "{\"message\": \"user not found\"}";
+        }
+        UsersModel foundUser = users.get(0);
+        if (encrypt.decryptAES256(foundUser.getPassword()).equals(user.getPassword())) {
+            Algorithm algorithm = Algorithm.HMAC256("783$OB#spa4&&-3KEbiylW2ZazA-LS27");
+            String token = JWT.create()
+                    .withIssuer("chakray-api-prueba")
+                    .withSubject(foundUser.getTax_id())
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 3600000))
+                    .sign(algorithm);
+            Map<String, Object> responsObject = new HashMap<>();
+            responsObject.put("message", "login successful");
+            responsObject.put("token", token);
+            responsObject.put("user", foundUser);
+            return responsObject;
+        } else {
+            return "{\"message\": \"invalid credentials\"}";
+        }
+    }
 }
