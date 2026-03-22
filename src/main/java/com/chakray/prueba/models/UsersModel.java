@@ -2,6 +2,8 @@ package com.chakray.prueba.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,14 +29,16 @@ public class UsersModel {
     private String phone;
     private String password;
 
+    @JsonProperty("tax_id")
     @Column(unique = true, nullable = false)
-    private String tax_id;
+    private String taxId;
 
-    private String created_at;
+    @JsonProperty("created_at")
+    private String createdAt;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private List<AdressModel> addresses;
+    private List<AddressModel> addresses;
 
     public Long getId() {
         return id;
@@ -77,26 +81,26 @@ public class UsersModel {
     }
 
     public String getTax_id() {
-        return tax_id;
+        return taxId;
     }
 
     public void setTax_id(String tax_id) {
-        this.tax_id = tax_id;
+        this.taxId = tax_id;
     }
 
     public String getCreated_at() {
-        return created_at;
+        return createdAt;
     }
 
     public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+        this.createdAt = created_at;
     }
 
-    public List<AdressModel> getAddresses() {
+    public List<AddressModel> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<AdressModel> addresses) {
+    public void setAddresses(List<AddressModel> addresses) {
         this.addresses = addresses;
     }
 
