@@ -21,4 +21,13 @@ public class UsersService {
         return usersRepository.save(user);
     }
 
+    public boolean deleteUser(Long id){
+        try {
+            usersRepository.deleteById(id);
+            return true;
+        } catch (Exception err) {
+            return false;
+        }
+    }
+
 }
