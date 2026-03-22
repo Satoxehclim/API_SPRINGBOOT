@@ -34,7 +34,7 @@ public class UsersModel {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private List<AdressModel> addresses;
+    private List<AddressModel> addresses;
 
     public Long getId() {
         return id;
@@ -92,11 +92,11 @@ public class UsersModel {
         this.created_at = created_at;
     }
 
-    public List<AdressModel> getAddresses() {
+    public List<AddressModel> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<AdressModel> addresses) {
+    public void setAddresses(List<AddressModel> addresses) {
         this.addresses = addresses;
     }
 
