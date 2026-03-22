@@ -36,6 +36,8 @@ public class EncryptComponent {
     ){
         SecretKeyFactory factory;
         KeySpec spec;
+        this.KEY = KEY;
+        this.SALT = SALT;
         try {
             factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
             spec = new PBEKeySpec(KEY.toCharArray(), SALT.getBytes(), 65536, 256);
