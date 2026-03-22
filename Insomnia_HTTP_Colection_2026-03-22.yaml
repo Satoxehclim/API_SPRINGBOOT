@@ -1,0 +1,592 @@
+type: collection.insomnia.rest/5.0
+name: Coleccion de Prueba API
+meta:
+  id: wrk_72783fb5feff4c749a4e8f361ecd5f73
+  created: 1774137294128
+  modified: 1774137310539
+  description: ""
+collection:
+  - url: http://localhost:8080/users
+    name: Get Users
+    meta:
+      id: req_41ab26248c044c4082d2efbdc04966ec
+      created: 1774137294198
+      modified: 1774210043959
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257736.75
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users
+    name: Add User 1
+    meta:
+      id: req_8f063a54df6e4734a89b719159decceb
+      created: 1774137413688
+      modified: 1774210804015
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257818
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "email": "francisco.perez56@outlook.com",
+        	"name": "Francisco Perez",
+          "phone": "+1 55 361 054 49",
+          "password": "TEST_PASSWORD_FRANCISCO",
+          "tax_id": "PERA560227YT9",
+          "addresses": [
+            {
+              "name": "Trabajo",
+              "street": "street No. 506",
+              "country_code": "UK"
+            },
+            {
+              "name": "Casa",
+              "street": "street No. 2311",
+              "country_code": "MX"
+            }
+          ]
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users/16
+    name: Delete User
+    meta:
+      id: req_1325382a7ffe4755800525564e1a7516
+      created: 1774142339727
+      modified: 1774218332753
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257724.25
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users
+    name: Get Users Sorted
+    meta:
+      id: req_c3c9189e826e4079ad0420d588378cbc
+      created: 1774145445283
+      modified: 1774210957689
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257732.0625
+    method: GET
+    parameters:
+      - id: pair_f4b1d74b69d848e0b9cc36217e9fc2ec
+        name: sortedBy
+        value: email
+        description: ""
+        disabled: true
+      - id: pair_74e3a0ccc43d46d09038b10600b97cc8
+        name: sortedBy
+        value: id
+        description: ""
+        disabled: true
+      - id: pair_39e6c608aa9e481da9d9082d72817659
+        name: sortedBy
+        value: name
+        description: ""
+        disabled: true
+      - id: pair_1d515560de484434a46c4ab260d830aa
+        name: sortedBy
+        value: phone
+        description: ""
+        disabled: true
+      - id: pair_f0a08740c66d492c9f453eb3cfd1c5ea
+        name: sortedBy
+        value: tax_id
+        description: ""
+        disabled: true
+      - id: pair_89c4b71f7b4b4909b55f270ed65a0467
+        name: sortedBy
+        value: created_at
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users
+    name: Get Users filtered email
+    meta:
+      id: req_a562b51cdff04c5eb3c1dfd082d15b00
+      created: 1774160067849
+      modified: 1774211322706
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257731.2812
+    method: GET
+    parameters:
+      - id: pair_e2325fc98b2d4481aa4e324589303c75
+        name: filter
+        value: email+co+hot
+        description: ""
+        disabled: false
+      - id: pair_c3c1488a01834abaa1b742dcf486bb6e
+        name: filter
+        value: email+eq+abrahamromanramirez@gmail.com
+        description: ""
+        disabled: true
+      - id: pair_f70e00d44b8249dfa5707deef6759884
+        name: filter
+        value: email+sw+roberto
+        description: ""
+        disabled: true
+      - id: pair_92f514914d4b471cba668e4f186315d6
+        name: filter
+        value: email+ew+outlook.com
+        description: ""
+        disabled: true
+    headers:
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users/15
+    name: Update User
+    meta:
+      id: req_43ea2cd338324d9a9a3dff25a65b5787
+      created: 1774165577359
+      modified: 1774218305859
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257730.5
+    method: PATCH
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "email": "roberto.enrique.gonzalez75@hotmail.com",
+        	"name": "Roberto Enrique Gonzalez Roman",
+          "password": "TEST_PASSWORD_ROBERTO_EDITADO"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users
+    name: Add User 2
+    meta:
+      id: req_56df0dab628f4acb825803075bf9cc54
+      created: 1774165641673
+      modified: 1774210771431
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257768
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "email": "abrahamromanramirez@gmail.com",
+        	"name": "Abraham Romanez",
+          "phone": "+52 55 468 147 51",
+          "password": "TEST_PASSWORD_ABRAHAM",
+          "tax_id": "RORA950409KM7",
+          "addresses": [
+            {
+              "name": "workaddress",
+              "street": "street No. 233",
+              "country_code": "JP"
+            },
+            {
+              "name": "homeaddress",
+              "street": "street No. 311",
+              "country_code": "AU"
+            }
+          ]
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users
+    name: Add User 3
+    meta:
+      id: req_172eeae0de404c55a9cbf8f1e5103b7e
+      created: 1774165652505
+      modified: 1774210750764
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257743
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "email": "roberto.enrique75@hotmail.com",
+        	"name": "Roberto Enrique Gonzalez",
+          "phone": "+12 55 276 253 54",
+          "password": "TEST_PASSWORD_ROBERTO",
+          "tax_id": "GORR750918BQ2",
+          "addresses": [
+            {
+              "name": "Work",
+              "street": "street No. 5609",
+              "country_code": "ES"
+            },
+            {
+              "name": "Home",
+              "street": "street No. 3245",
+              "country_code": "PT"
+            }
+          ]
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users/login
+    name: Login
+    meta:
+      id: req_b4368c7e61b24b0cb2ed638485101d3d
+      created: 1774166257718
+      modified: 1774218418035
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257718
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"password": "TEST_PASSWORD_ROBERTO_EDITADO",
+          "tax_id": "GORR750918BQ2"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users
+    name: Get Users filtered id
+    meta:
+      id: req_ed9c30c018074a318e364d7e134d14a9
+      created: 1774211008987
+      modified: 1774216841991
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257730.8906
+    method: GET
+    parameters:
+      - id: pair_e2325fc98b2d4481aa4e324589303c75
+        name: filter
+        value: id+co+4
+        description: ""
+        disabled: true
+      - id: pair_c3c1488a01834abaa1b742dcf486bb6e
+        name: filter
+        value: id+eq+13
+        description: ""
+        disabled: true
+      - id: pair_f70e00d44b8249dfa5707deef6759884
+        name: filter
+        value: id+sw+1
+        description: ""
+        disabled: true
+      - id: pair_f6d3f3ed8ffc466289ff5ad4024a189c
+        name: filter
+        value: id+ew+5
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users
+    name: Get Users filtered name
+    meta:
+      id: req_9aff058b148a489f95777549ad5a06bf
+      created: 1774211029346
+      modified: 1774217083101
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257730.6953
+    method: GET
+    parameters:
+      - name: filter
+        value: name+co+rique
+        id: pair_6db00077a1864f13ae3545b3759c2671
+        disabled: true
+      - name: filter
+        value: name+eq+Abraham Romanez
+        id: pair_4cfd95203c9944078ae6055863e1fc21
+        disabled: true
+      - name: filter
+        value: name+sw+Fra
+        id: pair_a3de3dd7a8d848f5871deae7deb5bca2
+        disabled: false
+      - name: filter
+        value: name+ew+anez
+        id: pair_e38760c2564142d3b27358a3fc086f66
+        disabled: true
+    headers:
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users
+    name: Get Users filtered tax_id
+    meta:
+      id: req_021f574ec6634b76ae9705abd9aa1e4d
+      created: 1774211041736
+      modified: 1774217860559
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257730.5366
+    method: GET
+    parameters:
+      - name: filter
+        value: tax_id+co+56
+        id: pair_f019e22cacc14e5597736c2e4144c78b
+        disabled: true
+      - name: filter
+        value: tax_id+eq+RORA950409KM7
+        id: pair_3df20898548c449fb25317b71650b5a8
+        disabled: true
+      - name: filter
+        value: tax_id+sw+G
+        id: pair_a9126318afae4441aba325407513e7d1
+        disabled: true
+      - name: filter
+        value: tax_id+ew+7
+        id: pair_2639e5b7cb0e4dde8f4663483a9b1509
+        disabled: true
+    headers:
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users
+    name: Get Users filtered phone
+    meta:
+      id: req_047959f1a15f45fe94ac68bb78d2295c
+      created: 1774211059316
+      modified: 1774217689483
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257730.5488
+    method: GET
+    parameters:
+      - name: filter
+        value: phone+co+53
+        id: pair_69164691c73940ca9cd7aaab0e700f3f
+        disabled: false
+      - name: filter
+        value: phone+eq++52 55 468 147 51
+        id: pair_69a288d243554f4d900ae4d7f48e4818
+        disabled: true
+      - name: filter
+        value: phone+sw++12
+        id: pair_6c46c415edfa4f36844ccf81b20afbc8
+        disabled: true
+      - name: filter
+        value: phone+ew+9
+        id: pair_bd6403992d1d434bafb5992a8117154c
+        disabled: true
+    headers:
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users
+    name: Get Users filtered created_at
+    meta:
+      id: req_67c41036625c496eb83bae2cf9a81893
+      created: 1774211069152
+      modified: 1774218182320
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257730.5244
+    method: GET
+    parameters:
+      - name: filter
+        value: created_at+co+20
+        id: pair_a8d1885e90aa46b5871fa84e30e742cb
+        disabled: true
+      - name: filter
+        value: created_at+eq+23-03-2026 01:21
+        id: pair_0a1b34e5cf2d4458a79dff274a4132ba
+        disabled: true
+      - name: filter
+        value: created_at+sw+22
+        id: pair_7965a8e112e24e8982038c08372dce69
+        disabled: true
+      - name: filter
+        value: created_at+ew+1:21
+        id: pair_3ab28eccd7dd4207a96ee4c3ff6fa72d
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/users
+    name: Add User 4
+    meta:
+      id: req_b6daafb0d22844ff8656cd0855774b6e
+      created: 1774217971565
+      modified: 1774218104134
+      isPrivate: false
+      description: ""
+      sortKey: -1774166257739.875
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "email": "Carlos.nakamura43@hotmail.com",
+        	"name": "Carlos Nakamura",
+          "phone": "+12 55 876 456 12",
+          "password": "TEST_PASSWORD_ROBERTO",
+          "tax_id": "IDNC430918PL7",
+          "addresses": [
+            {
+              "name": "Work",
+              "street": "street No. 678",
+              "country_code": "MX"
+            },
+            {
+              "name": "Home",
+              "street": "street No. 349",
+              "country_code": "ES"
+            }
+          ]
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_1e4fb88d2d1e0e9065cde144985e76df6110913d
+    created: 1774137294133
+    modified: 1774137294133
+environments:
+  name: Base Environment
+  meta:
+    id: env_1e4fb88d2d1e0e9065cde144985e76df6110913d
+    created: 1774137294131
+    modified: 1774137294131
+    isPrivate: false
