@@ -1,6 +1,7 @@
 package com.chakray.prueba.services;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class UsersService {
         return usersRepository.findByEmailContains(email);
     }
 
-    public ArrayList<UsersModel> findUserContainsId(Long id) {
+    public ArrayList<UsersModel> findUserContainsId(String id) {
         return usersRepository.findByIdContains(id);
     }
 
@@ -64,8 +65,8 @@ public class UsersService {
         return usersRepository.findByEmail(email);
     }
 
-    public ArrayList<UsersModel> findUserEqualsId(Long id) {
-        return (ArrayList<UsersModel>) usersRepository.findById(id).stream().toList();
+    public Optional<UsersModel> findUserEqualsId(Long id) {
+        return  usersRepository.findById(id);
     }
 
     public ArrayList<UsersModel> findUserEqualsName(String name) {
@@ -89,7 +90,7 @@ public class UsersService {
         return usersRepository.findByEmailStartsWith(email);
     }
 
-    public ArrayList<UsersModel> findUserStartsWithId(Long id) {
+    public ArrayList<UsersModel> findUserStartsWithId(String id) {
         return usersRepository.findByIdStartsWith(id);
     }
 
@@ -114,7 +115,7 @@ public class UsersService {
         return usersRepository.findByEmailEndsWith(email);
     }
 
-    public ArrayList<UsersModel> findUserEndsWithId(Long id) {
+    public ArrayList<UsersModel> findUserEndsWithId(String id) {
         return usersRepository.findByIdEndsWith(id);
     }
 

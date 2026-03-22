@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -84,10 +85,13 @@ public class UsersController {
             }
             case "id" -> {
                 switch (filterParts[1]){
-                    case "co" -> users = usersService.findUserContainsId(Long.valueOf(filterParts[2]));
-                    case "eq" -> users = usersService.findUserEqualsId(Long.valueOf(filterParts[2]));
-                    case "sw" -> users = usersService.findUserStartsWithId(Long.valueOf(filterParts[2]));
-                    case "ew" -> users = usersService.findUserEndsWithId(Long.valueOf(filterParts[2]));
+                    case "co" -> users = usersService.findUserContainsId(filterParts[2]);
+                    case "eq" -> {
+                        Optional<UsersModel> userOpt = usersService.findUserEqualsId(Long.valueOf(filterParts[2]));
+                        userOpt.ifPresent(users::add);
+                    }
+                    case "sw" -> users = usersService.findUserStartsWithId(filterParts[2]);
+                    case "ew" -> users = usersService.findUserEndsWithId(filterParts[2]);
                 }
             }
             case "name" -> {
