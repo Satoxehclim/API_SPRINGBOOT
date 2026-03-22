@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.chakray.prueba.Encrypt;
+import com.chakray.prueba.components.EncryptComponent;
 import com.chakray.prueba.models.UsersModel;
 import com.chakray.prueba.services.UsersService;
 
@@ -36,7 +37,14 @@ public class UsersController {
     @Autowired
     UsersService usersService;
 
-    Encrypt encrypt = new Encrypt();
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
+    @Value("${jwt.expiration.time}")
+    private Long jwtExpirationTime;
+
+    @Autowired
+    EncryptComponent encrypt;
     private final String regexTaxId = "^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$";
     private final String regexPhone = "^(\\+[0-9]{1,3} )?[0-9]{2} [0-9]{3} [0-9]{3} [0-9]{2}$";
 
@@ -207,11 +215,11 @@ public class UsersController {
         }
         UsersModel foundUser = users.get(0);
         if (encrypt.decryptAES256(foundUser.getPassword()).equals(user.getPassword())) {
-            Algorithm algorithm = Algorithm.HMAC256("783$OB#spa4&&-3KEbiylW2ZazA-LS27");
+            Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
             String token = JWT.create()
                     .withIssuer("chakray-api-prueba")
                     .withSubject(foundUser.getTax_id())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 3600000))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpirationTime))
                     .sign(algorithm);
             Map<String, Object> responsObject = new HashMap<>();
             responsObject.put("message", "login successful");

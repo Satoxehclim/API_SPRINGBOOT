@@ -1,4 +1,4 @@
-package com.chakray.prueba;
+package com.chakray.prueba.components;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -18,16 +18,22 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-public class Encrypt {
+@Component
+public class EncryptComponent {
 
-    // Nota para los desarrolladores: Estas claves fueron generadas aleatoriamente en https://us.norton.com/feature/password-generator
-    private static final String KEY = "sta1$o0HlTi_huwez#p_d!ditrepr+to";
-    private static final String SALT = "phAg4S-xIb3b*OtIrucREjOVlQ6R18Ir";
+    // Nota para los desarrolladores: Estas claves fueron generadas aleatoriamente en https://us.norton.com/feature/password-generator y ahora estan guardadas en las variables de entornodel proyecto
+    private String KEY;
+    private String SALT;
 
     private SecretKey secretKeyTemp;
 
-    public Encrypt(){
+    public EncryptComponent(
+        @Value("${encryption.key}")  String KEY,
+        @Value("${encryption.salt}")  String SALT
+    ){
         SecretKeyFactory factory;
         KeySpec spec;
         try {
