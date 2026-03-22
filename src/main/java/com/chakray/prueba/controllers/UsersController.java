@@ -73,7 +73,7 @@ public class UsersController {
             return "{\"message\": \"filter parameter is required\"}";
         }
         ArrayList<UsersModel> users = new ArrayList<>();
-        String[] filterParts = filter.split("\\+");
+        String[] filterParts = filter.split("\\+", 3);
         switch (filterParts[0]){
             case "email" -> {
                 switch (filterParts[1]){
