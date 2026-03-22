@@ -52,7 +52,69 @@ public class UsersController {
         return users;
     }
 
-    //TODO: Implementar endpoint para filtrar usuarios con los parametros[email|id|name|phone|tax_id|created_at]+[co|eq|sw|ew]+[value], donde co es contains, eq es equals, sw es starts with y ew es ends with
+    @GetMapping(params = "filter")
+    public Object filterUsers(@RequestParam(name = "filter") String filter) {
+        if (filter == null || filter.isEmpty()) {
+            return "{\"message\": \"filter parameter is required\"}";
+        }
+        ArrayList<UsersModel> users = new ArrayList<>();
+        String[] filterParts = filter.split("\\+");
+        switch (filterParts[0]){
+            case "email" -> {
+                switch (filterParts[1]){
+                    case "co" -> users = usersService.findUserContainsEmail(filterParts[2]);
+                    case "eq" -> users = usersService.findUserEqualsEmail(filterParts[2]);
+                    case "sw" -> users = usersService.findUserStartsWithEmail(filterParts[2]);
+                    case "ew" -> users = usersService.findUserEndsWithEmail(filterParts[2]);
+                }
+            }
+            case "id" -> {
+                switch (filterParts[1]){
+                    case "co" -> users = usersService.findUserContainsId(Long.valueOf(filterParts[2]));
+                    case "eq" -> users = usersService.findUserEqualsId(Long.valueOf(filterParts[2]));
+                    case "sw" -> users = usersService.findUserStartsWithId(Long.valueOf(filterParts[2]));
+                    case "ew" -> users = usersService.findUserEndsWithId(Long.valueOf(filterParts[2]));
+                }
+            }
+            case "name" -> {
+                switch (filterParts[1]){
+                    case "co" -> users = usersService.findUserContainsName(filterParts[2]);
+                    case "eq" -> users = usersService.findUserEqualsName(filterParts[2]);
+                    case "sw" -> users = usersService.findUserStartsWithName(filterParts[2]);
+                    case "ew" -> users = usersService.findUserEndsWithName(filterParts[2]);
+                }
+            }
+            case "phone" -> {
+                switch (filterParts[1]){
+                    case "co" -> users = usersService.findUserContainsPhone(filterParts[2]);
+                    case "eq" -> users = usersService.findUserEqualsPhone(filterParts[2]);
+                    case "sw" -> users = usersService.findUserStartsWithPhone(filterParts[2]);
+                    case "ew" -> users = usersService.findUserEndsWithPhone(filterParts[2]);
+                }
+            }
+            case "tax_id" -> {
+                switch (filterParts[1]){
+                    case "co" -> users = usersService.findUserContainsTaxId(filterParts[2]);
+                    case "eq" -> users = usersService.findUserEqualsTaxId(filterParts[2]);
+                    case "sw" -> users = usersService.findUserStartsWithTaxId(filterParts[2]);
+                    case "ew" -> users = usersService.findUserEndsWithTaxId(filterParts[2]);
+                }
+            }
+            case "created_at" -> {
+                switch (filterParts[1]){
+                    case "co" -> users = usersService.findUserContainsCreatedAt(filterParts[2]);
+                    case "eq" -> users = usersService.findUserEqualsCreatedAt(filterParts[2]);
+                    case "sw" -> users = usersService.findUserStartsWithCreatedAt(filterParts[2]);
+                    case "ew" -> users = usersService.findUserEndsWithCreatedAt(filterParts[2]);
+                }
+            }
+        }
+
+        if (users.isEmpty()) {
+            return "{\"message\": \"no users found\"}";
+        }
+        return users;
+    }
 
     @PostMapping()
     public String saveUser(@RequestBody UsersModel user){
