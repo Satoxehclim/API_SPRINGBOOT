@@ -64,6 +64,7 @@ public class UsersController {
                 }
             }
         }
+        users.forEach(user -> user.setPassword(null));
         return users;
     }
 
@@ -131,6 +132,7 @@ public class UsersController {
         if (users.isEmpty()) {
             return "{\"message\": \"no users found\"}";
         }
+        users.forEach(user -> user.setPassword(null));
         return users;
     }
 
@@ -161,7 +163,9 @@ public class UsersController {
         user.setPassword(encrypt.encryptAES256(user.getPassword()));
 
         try {
-            return this.usersService.saveUser(user);
+            UsersModel savedUser = usersService.saveUser(user);
+            savedUser.setPassword(null);
+            return savedUser;
         } catch (Exception e) {
             return "{\"message\": \"error saving user, review the data\"}";
         }
@@ -217,7 +221,9 @@ public class UsersController {
             userToUpdate.setAddresses(user.getAddresses());
         }
         try {
-            return usersService.saveUser(userToUpdate);
+            usersService.saveUser(userToUpdate);
+            userToUpdate.setPassword(null);
+            return userToUpdate;
         } catch (Exception e) {
             return "{\"message\": \"error updating user, review the data\"}";
         }
@@ -243,6 +249,7 @@ public class UsersController {
             Map<String, Object> responsObject = new HashMap<>();
             responsObject.put("message", "login successful");
             responsObject.put("token", token);
+            foundUser.setPassword(null);
             responsObject.put("user", foundUser);
             return responsObject;
         } else {
