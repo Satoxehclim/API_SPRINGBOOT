@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,6 +64,7 @@ public class UsersController {
                 }
             }
         }
+        users.forEach(user -> user.setPassword(null));
         return users;
     }
 
@@ -72,7 +74,7 @@ public class UsersController {
             return "{\"message\": \"filter parameter is required\"}";
         }
         ArrayList<UsersModel> users = new ArrayList<>();
-        String[] filterParts = filter.split("\\+");
+        String[] filterParts = filter.split("\\+", 3);
         switch (filterParts[0]){
             case "email" -> {
                 switch (filterParts[1]){
@@ -84,10 +86,13 @@ public class UsersController {
             }
             case "id" -> {
                 switch (filterParts[1]){
-                    case "co" -> users = usersService.findUserContainsId(Long.valueOf(filterParts[2]));
-                    case "eq" -> users = usersService.findUserEqualsId(Long.valueOf(filterParts[2]));
-                    case "sw" -> users = usersService.findUserStartsWithId(Long.valueOf(filterParts[2]));
-                    case "ew" -> users = usersService.findUserEndsWithId(Long.valueOf(filterParts[2]));
+                    case "co" -> users = usersService.findUserContainsId(filterParts[2]);
+                    case "eq" -> {
+                        Optional<UsersModel> userOpt = usersService.findUserEqualsId(Long.valueOf(filterParts[2]));
+                        userOpt.ifPresent(users::add);
+                    }
+                    case "sw" -> users = usersService.findUserStartsWithId(filterParts[2]);
+                    case "ew" -> users = usersService.findUserEndsWithId(filterParts[2]);
                 }
             }
             case "name" -> {
@@ -127,11 +132,12 @@ public class UsersController {
         if (users.isEmpty()) {
             return "{\"message\": \"no users found\"}";
         }
+        users.forEach(user -> user.setPassword(null));
         return users;
     }
 
     @PostMapping()
-    public String saveUser(@RequestBody UsersModel user){
+    public Object saveUser(@RequestBody UsersModel user){
 
         if (user.getEmail() == null || user.getName() == null || user.getPhone() == null || user.getPassword() == null || user.getTax_id() == null || user.getAddresses() == null) {
             return "{\"message\": \"missing required fields, the following fields are required: email, name, phone, password, tax_id and addresses object\"}";
@@ -151,13 +157,15 @@ public class UsersController {
 
         ZoneId zoneId = ZoneId.of("GMT+3");
         ZonedDateTime now = ZonedDateTime.now(zoneId);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-mm-yyyy HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         user.setCreated_at(now.format(formatter));
         
         user.setPassword(encrypt.encryptAES256(user.getPassword()));
 
         try {
-            return this.usersService.saveUser(user).toString();
+            UsersModel savedUser = usersService.saveUser(user);
+            savedUser.setPassword(null);
+            return savedUser;
         } catch (Exception e) {
             return "{\"message\": \"error saving user, review the data\"}";
         }
@@ -185,20 +193,37 @@ public class UsersController {
         if (user.getName() != null) {
             userToUpdate.setName(user.getName());
         }
-        if (user.getPhone() != null) {
-            userToUpdate.setPhone(user.getPhone());
+        
+        if (user.getPhone() != null ) {
+            Pattern patternPhone = Pattern.compile(regexPhone);
+            Matcher matcherPhone = patternPhone.matcher(user.getPhone());
+            if (matcherPhone.find()){
+                userToUpdate.setPhone(user.getPhone());
+            } else {
+                return "{\"message\": \"invalid phone format, it should be like +1 55 555 555 55 or +12 55 555 555 55 or +123 55 555 555 55 or 55 555 555 55\"}";
+            }
+            
         }
         if (user.getPassword() != null) {
             userToUpdate.setPassword(encrypt.encryptAES256(user.getPassword()));
         }
+        
         if (user.getTax_id() != null) {
-            userToUpdate.setTax_id(user.getTax_id());
+            Pattern patternTaxId = Pattern.compile(regexTaxId);
+            Matcher matcherTaxId = patternTaxId.matcher(user.getTax_id());
+            if( matcherTaxId.find()){
+                userToUpdate.setTax_id(user.getTax_id());
+            } else {
+                return "{\"message\": \"invalid tax_id format, it should be like ABCD981220KM7\"}";
+            }
         }
         if (user.getAddresses() != null) {
             userToUpdate.setAddresses(user.getAddresses());
         }
         try {
-            return usersService.saveUser(userToUpdate);
+            usersService.saveUser(userToUpdate);
+            userToUpdate.setPassword(null);
+            return userToUpdate;
         } catch (Exception e) {
             return "{\"message\": \"error updating user, review the data\"}";
         }
@@ -224,6 +249,7 @@ public class UsersController {
             Map<String, Object> responsObject = new HashMap<>();
             responsObject.put("message", "login successful");
             responsObject.put("token", token);
+            foundUser.setPassword(null);
             responsObject.put("user", foundUser);
             return responsObject;
         } else {
